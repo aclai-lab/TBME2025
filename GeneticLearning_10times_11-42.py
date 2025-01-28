@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix
 import pygad
 import numpy as np
-import joblib
+import pickle
 import matplotlib.pyplot as plt  # For saving the fitness plot
 
 result_folder = 'ResidualProducts'
@@ -22,6 +22,7 @@ num_iterations = 10
 
 # Process the bin for each iteration
 for iteration in range(num_iterations):
+    print(iteration)
     # Binarize the target variable based on thresholds
     bin_data = df.copy()
     bin_data['vote'] = np.where(
@@ -92,9 +93,9 @@ for iteration in range(num_iterations):
     final_model.fit(X_train_selected, y_train)
     
     # Save the final model to a file
-    model_filename = f'{result_folder}/random_forest_model_iteration_{iteration + 1}.pkl'
-    joblib.dump(final_model, model_filename)
-    
+    with open(f'{result_folder}/random_forest_model_iteration_{iteration + 1}.pkl', 'wb') as file:
+        pickle.dump(final_model, file)
+
     # Evaluate the final model
     y_pred = final_model.predict(X_test_selected)
     
@@ -120,7 +121,6 @@ for iteration in range(num_iterations):
         "ppv": ppv,
         "npv": npv,
         "selected_features": selected_features_str,  # Add selected features as a string
-        "model_filename": model_filename  # Add the model filename
     }
     
     # Append metrics to the list
@@ -134,7 +134,7 @@ for iteration in range(num_iterations):
     print(f"PPV: {ppv}")
     print(f"NPV: {npv}")
     print("Selected Features:", selected_features_str)
-    print("Model saved to:", model_filename)
+    print("Model saved")
     print("\n")
 
 # Save all metrics to a CSV file
