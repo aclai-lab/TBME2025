@@ -29,15 +29,15 @@ This repository contains two Jupyter notebooks and a `requirements.txt` file. Th
 Each trial is defined by a pair (*subject*, *painting*). For each trial, you will have:
 
 1. **Pupil Coordinates Files (`trial_i.csv`)**  
-   - Contains the *x*, *y* coordinates of the pupil at each timestamp.
-   - Each row corresponds to a single timestamp.
+      - Contains the *x*, *y* coordinates of the pupil at each timestamp.
+      - Each row corresponds to a single timestamp.
 
 2. **Diameter & Confidence Files**  
-   - Contains the pupil diameter and a confidence score for each timestamp (extracted from the same trial).
-   - Each row corresponds to a single timestamp, in sync with the coordinates file.
+      - Contains the pupil diameter and a confidence score for each timestamp (extracted from the same trial).
+      - Each row corresponds to a single timestamp, in sync with the coordinates file.
 
 3. **`votes.csv`**  
-   - Associates each (*subject*, *painting*) pair with the *vote* (a rating) the subject assigned to that artwork.
+      - Associates each (*subject*, *painting*) pair with the *vote* (a rating) the subject assigned to that artwork.
 
 Below is an illustrative example of how the merged data (timestamp-wise) might look once coordinates, diameter, and confidence are combined:
 
@@ -50,7 +50,7 @@ Below is an illustrative example of how the merged data (timestamp-wise) might l
 
 ### Trial Duration
 
-Knowing the sampling frequency (in Hz) allows you to convert the number of rows (timestamps) into the duration (in seconds) of each trial.
+   Knowing the sampling frequency (in Hz) allows you to convert the number of rows (timestamps) into the duration (in seconds) of each trial.
 
 ---
 
@@ -59,26 +59,26 @@ Knowing the sampling frequency (in Hz) allows you to convert the number of rows 
 ### Overview
 
 1. **Data Merging**  
-   Merges the coordinates file(s) with the diameter/confidence file(s) for each trial. The result is a complete dataset of (*timestamp*, x, y, *diameter*, *confidence*) for each trial.
+      Merges the coordinates file(s) with the diameter/confidence file(s) for each trial. The result is a complete dataset of (*timestamp*, x, y, *diameter*, *confidence*) for each trial.
 
 2. **Data Cleaning**  
-   - Removes rows/trials based on statistical dispersion thresholds (both in terms of duration and range of values).
-   - Ensures high-quality measurements remain in the final dataset.
+      - Removes rows/trials based on statistical dispersion thresholds (both in terms of duration and range of values).
+      - Ensures high-quality measurements remain in the final dataset.
 
 3. **Fixation Detection**  
-   - Dynamically calculates a threshold for each trial (based on the dispersion of pupil coordinates).
-   - Identifies fixations (clusters of consecutive samples where the pupil position is relatively stable) and assigns them an area of interest.
+      - Dynamically calculates a threshold for each trial (based on the dispersion of pupil coordinates).
+      - Identifies fixations (clusters of consecutive samples where the pupil position is relatively stable) and assigns them an area of interest.
 
 4. **Feature Extraction**  
-   - Extracts various features for each fixation and for the entire trial:
-     - **Spatial features** (e.g., centroid of fixations, bounding boxes).
-     - **Temporal features** (e.g., duration of fixations, time to first fixation).
-     - **Pupil-based features** (e.g., average diameter, standard deviation of diameter).
-   - Aggregates these features in multiple ways (e.g., summary statistics per fixation, or across all fixations in a trial).
+      - Extracts various features for each fixation and for the entire trial:
+        - **Spatial features** (e.g., centroid of fixations, bounding boxes).
+        - **Temporal features** (e.g., duration of fixations, time to first fixation).
+        - **Pupil-based features** (e.g., average diameter, standard deviation of diameter).
+      - Aggregates these features in multiple ways (e.g., summary statistics per fixation, or across all fixations in a trial).
 
 5. **Dataset Construction**  
-   - The final step merges all features for each \((\text{subject}, \text{artwork})\) trial with the corresponding *vote* from `votes.csv`.
-   - Outputs a “ready-to-use” dataset for machine learning models.
+      - The final step merges all features for each \((\text{subject}, \text{artwork})\) trial with the corresponding *vote* from `votes.csv`.
+      - Outputs a “ready-to-use” dataset for machine learning models.
 
 ### How to Run
 
@@ -90,9 +90,9 @@ Knowing the sampling frequency (in Hz) allows you to convert the number of rows 
 
 2. **Install Requirements**
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 3. **Place Your Data**
 
@@ -113,12 +113,12 @@ Verify that the final output is the cleaned dataset (saved as a CSV or Pandas Da
 ### Overview
 
 1. **Feature Selection & Genetic Algorithm**
-   Uses PyGAD to evolve subsets of features.
-   Each generation attempts to maximize the classification accuracy of a Random Forest in a 10-fold cross-validation setup.
+      Uses PyGAD to evolve subsets of features.
+      Each generation attempts to maximize the classification accuracy of a Random Forest in a 10-fold cross-validation setup.
 
 2. **Multiple Time-Window Splits**
-   The dataset can be split into up to four different time windows (or “finestrations”).
-   The objective is to find which segment of the trial yields the highest predictive accuracy.
+      The dataset can be split into up to four different time windows (or “finestrations”).
+      The objective is to find which segment of the trial yields the highest predictive accuracy.
 
 3. **Random Forest Training**
         Trains a Random Forest in each generation with the selected subset of features.
@@ -161,31 +161,30 @@ Verify that the final output is the cleaned dataset (saved as a CSV or Pandas Da
 ## Results Summary
 
   **Optimal Time-Window**
-  A specific window (or combination of windows) produced the highest accuracy. For example, [0,11] -> 0 and [42,50] -> 1 in the best-performing scenario.
+     A specific window (or combination of windows) produced the highest accuracy. For example, [0,11] -> 0 and [42,50] -> 1 in the best-performing scenario.
 
   **Highest Accuracy**
-  After 100 generations, we observe improved accuracy, sensitivity, specificity, PPV, and NPV compared to the baseline model trained on the entire feature set.
+     After 100 generations, we observe improved accuracy, sensitivity, specificity, PPV, and NPV compared to the baseline model trained on the entire feature set.
 
   **Feature Subset**
-  The final model used a carefully selected subset of features, which were found to maximize classification performance in a 10-fold cross-validation setting.
+     The final model used a carefully selected subset of features, which were found to maximize classification performance in a 10-fold cross-validation setting.
 
-Reproducing the Experiment
-Run DataCleaning_Pipeline.ipynb to generate the cleaned dataset.
-Run Learning_KnowledgeDistillation.ipynb to perform the feature selection, train the models, and evaluate their performance.
-Interpret the Results:
-    Check the printed metrics and generation logs in the notebook outputs.
-    Refer to the final “best subset” of features for subsequent analyses or real-world applications.
+   Reproducing the Experiment
+   Run DataCleaning_Pipeline.ipynb to generate the cleaned dataset.
+   Run Learning_KnowledgeDistillation.ipynb to perform the feature selection, train the models, and evaluate their performance.
+   Interpret the Results:
+      Check the printed metrics and generation logs in the notebook outputs.
+      Refer to the final “best subset” of features for subsequent analyses or real-world applications.
 
 ### Contributing
 
-Feel free to open issues or submit pull requests. If you have ideas to improve the data cleaning or the feature selection strategy (e.g., integrating domain-specific insights about eye movements and psychology), please contribute!
+   Feel free to open issues or submit pull requests. If you have ideas to improve the data cleaning or the feature selection strategy (e.g., integrating domain-specific insights about eye movements and psychology), please contribute!
 
 ### License
 
-This project is licensed under the MIT License – see the LICENSE file for details.
+   This project is licensed under the MIT License – see the LICENSE file for details.
 
 ### Contact
 
-For questions about this repository or the associated paper, please open an issue or reach out directly. Contributions and collaborations are welcome.
+   For questions about this repository or the associated paper, please open an issue or reach out directly. Contributions and collaborations are welcome.
 
-Happy analyzing and learning!
