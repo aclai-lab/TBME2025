@@ -77,15 +77,17 @@ Below is an illustrative example of how the merged data (timestamp-wise) might l
       - Aggregates these features in multiple ways (e.g., summary statistics per fixation, or across all fixations in a trial).
 
 5. **Dataset Construction**  
-      - The final step merges all features for each \((\text{subject}, \text{artwork})\) trial with the corresponding *vote* from `votes.csv`.
+      - The final step merges all features for each (*subject*, *painting*) trial with the corresponding *vote* from `votes.csv`.
       - Outputs a “ready-to-use” dataset for machine learning models.
+
+N.B. After the cleaning pipeline it will be occupied nearly 500MB of residual files of intermediate steps.
 
 ### How to Run
 
 1. **Clone the Repository**  
    ```bash
-   git clone https://github.com/YourUsername/EyeTracking-Analysis.git
-   cd EyeTracking-Analysis
+   git clone https://github.com/aclai-lab/TBME2025.git TBME2025/
+   cd TBME2025
    ```
 
 2. **Install Requirements**
