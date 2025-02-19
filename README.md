@@ -1,4 +1,4 @@
-# README: Eye-Tracking Data Cleaning, Processing, Learning & Knowledge Distillation
+Eye-Tracking Data Cleaning, Processing, Learning & Knowledge Distillation
 
 This repository contains two Jupyter notebooks and a `requirements.txt` file. The notebooks demonstrate a complete pipeline for processing eye-tracking data, extracting relevant features, and performing a classification task with feature selection. Below is an overview of the data structure, the workflow, and the instructions to reproduce the results.
 
